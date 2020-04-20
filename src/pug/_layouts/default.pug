@@ -1,0 +1,12 @@
+block variables
+  - var title= ''
+
+doctype html
+html
+  head
+    meta(charset= 'utf-8')
+    title= title + ' - HTML MOCK'
+  body
+    include ../_parts/header
+    block content
+    include ../_parts/footer

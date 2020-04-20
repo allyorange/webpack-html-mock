@@ -1,0 +1,12 @@
+extends _layouts/default
+
+block variables
+  - var title= 'ARTICLE'
+
+block content
+  .main
+    h1.page-header= title
+    a(href= 'https://webpack.js.org/' target= '_blank')
+      img(src= require('../../assets/images/webpack-icon-square-small-emoji1.png').default width= '50' height= '50')
+    p
+      a(href= './index.html') Index
