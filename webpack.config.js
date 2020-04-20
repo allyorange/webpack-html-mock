@@ -12,11 +12,11 @@ fs.readdirSync(path.join(__dirname, 'src', 'pug')).forEach(file => {
   }));
 });
 
-module.exports = {
+module.exports = (env, argv) => ({
   entry: './src/javascript/app.js',
   output: {
     path: path.resolve(__dirname, 'public'),
-    filename: 'js/[contenthash].js',
+    filename: argv.mode === 'development' ? '[contenthash].js' : '[contenthash].bundle.js',
   },
   devtool: 'source-map',
   devServer: {
@@ -37,7 +37,7 @@ module.exports = {
             // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
             return;
           }
-          console.log("    External: http://" + iface.address +":" + server.options.port);
+          console.log("    External: http://" + iface.address + ":" + server.options.port);
         });
       });
       console.log(" -------------------------------------\n");
@@ -61,9 +61,11 @@ module.exports = {
         use: [
           {
             loader: 'file-loader',
-            options: {
+            options: argv.mode === 'development' ? {
               name: '[path][name].[ext]',
-              publicPath: '/',
+            } : {
+              name: '[contenthash].[ext]',
+              outputPath: 'assets/images',
             },
           },
         ],
@@ -85,7 +87,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: 'css/[contenthash].css',
+      filename: argv.mode === 'development' ? '[contenthash].css' : '[contenthash].bundle.css',
     }),
   ].concat(htmlWebpackPlugins)
-};
+});
